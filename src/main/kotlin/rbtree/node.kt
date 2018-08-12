@@ -51,12 +51,8 @@ class Node<T : Comparable<T>>(val value: T,
     fun isRightChild() = this === this.parent?.right
 
     fun uncle(): Node<T>? {
-        if (isLeftChild()) {
-            return parent?.right
-        }
-        if (isRightChild()) {
-            return parent?.left
-        }
+        if (isLeftChild()) return parent?.right
+        if (isRightChild()) return parent?.left
         return null
     }
 
@@ -86,9 +82,7 @@ class Node<T : Comparable<T>>(val value: T,
 }
 
 fun <T : Comparable<T>> Node<T>?.toStringEvenIfNull(): String {
-    if (this == null) {
-        return "Leaf"
-    }
+    if (this == null) return "Leaf"
     val prefix = if (color == Color.BLACK) "B" else "R"
     val nodeName = if (isRoot) "Root" else "Node"
     return "${prefix}${nodeName}($value)"
