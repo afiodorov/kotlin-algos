@@ -75,4 +75,56 @@ class TestSource {
         assertSame(y.right, gamma)
         assertSame(gamma.parent, y)
     }
+
+    @Test fun NodeLeftRotate() {
+        val parent = Node<Long>(0)
+        val x = Node<Long>(10)
+        parent.addRightNode(x)
+        val y = Node<Long>(3)
+        val alpha = Node<Long>(20)
+        val beta = Node<Long>(30)
+        val gamma = Node<Long>(15)
+        x.addLeftNode(alpha)
+        x.addRightNode(y)
+        y.addLeftNode(beta)
+        y.addRightNode(gamma)
+        x.leftRotate()
+
+        assertSame(parent.right, y)
+        assertSame(y.parent, parent)
+        assertSame(x.left, alpha)
+        assertSame(alpha.parent, x)
+        assertSame(x.right, beta)
+        assertSame(beta.parent, x)
+        assertSame(y.right, gamma)
+        assertSame(gamma.parent, y)
+        assertSame(y.left, x)
+        assertSame(x.parent, y)
+    }
+
+    @Test fun NodeLeftRotateLeftParent() {
+        val parent = Node<Long>(0)
+        val x = Node<Long>(10)
+        parent.addLeftNode(x)
+        val y = Node<Long>(3)
+        val alpha = Node<Long>(20)
+        val beta = Node<Long>(30)
+        val gamma = Node<Long>(15)
+        x.addLeftNode(alpha)
+        x.addRightNode(y)
+        y.addLeftNode(beta)
+        y.addRightNode(gamma)
+        x.leftRotate()
+
+        assertSame(parent.left, y)
+        assertSame(y.parent, parent)
+        assertSame(x.left, alpha)
+        assertSame(alpha.parent, x)
+        assertSame(x.right, beta)
+        assertSame(beta.parent, x)
+        assertSame(y.right, gamma)
+        assertSame(gamma.parent, y)
+        assertSame(y.left, x)
+        assertSame(x.parent, y)
+    }
 }
