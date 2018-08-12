@@ -88,14 +88,18 @@ fun <T : Comparable<T>> Node<T>?.toStringEvenIfNull(): String {
     return "${prefix}${nodeName}($value)"
 }
 
-fun <T : Comparable<T>> rbInsert(root: Node<T>, value: T) {
-    var curNode: Node<T>? = root
-    var curParent: Node<T> = root
-    while (curNode != null) {
-        curParent = curNode
-        curNode = if (value < curNode.value) curNode.left else curNode.right
+class Tree<T : Comparable<T>>(val rootValue: T) {
+    var root = Node<T>(rootValue)
+
+    fun unbalancedInsert(value: T) {
+        var curNode: Node<T>? = this.root
+        var curParent: Node<T> = this.root
+        while (curNode != null) {
+            curParent = curNode
+            curNode = if (value < curNode.value) curNode.left else curNode.right
+        }
+        curParent.addChildNode(Node(value, color = Color.RED))
     }
-    curParent.addChildNode(Node(value, color = Color.RED))
 }
 
 fun <T : Comparable<T>> rbInsertFixup(root: Node<T>, newNode: Node<T>) {
@@ -133,10 +137,10 @@ fun <T : Comparable<T>> rbInsertFixup(root: Node<T>, newNode: Node<T>) {
 }
 
 fun main(args: Array<String>) {
-    val n1 = Node<Long>(3)
-    rbInsert<Long>(n1, 10)
-    rbInsert<Long>(n1, 2)
-    rbInsert<Long>(n1, 12)
-    println(n1)
-    println(n1.right)
+    val tree = Tree<Long>(3)
+    tree.unbalancedInsert(10)
+    tree.unbalancedInsert(2)
+    tree.unbalancedInsert(12)
+    println(tree.root)
+    println(tree.root.right)
 }
