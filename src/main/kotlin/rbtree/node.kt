@@ -62,16 +62,11 @@ class Node<T : Comparable<T>>(val value: T,
 
     fun leftRotate() {
         val child = right!!
-        right = child.left
-        if (child.left !== null) {
-            child.parent = this
-        }
-        if (isLeftChild()) {
-            parent?.left = child
-        }
-        if (isRightChild()) {
-            parent?.right = child
-        }
+        val childLeft = child.left
+        right = childLeft
+        if (childLeft !== null) childLeft.parent = this
+        if (isLeftChild()) parent?.left = child
+        if (isRightChild()) parent?.right = child
         child.parent = parent
         child.left = this
         parent = child
@@ -79,16 +74,11 @@ class Node<T : Comparable<T>>(val value: T,
 
     fun rightRotate() {
         val child = left!!
-        left = child.right
-        if (child.right !== null) {
-            child.parent = this
-        }
-        if (isLeftChild()) {
-            parent?.left = child
-        }
-        if (isRightChild()) {
-            parent?.right = child
-        }
+        val childRight = child.right
+        left = childRight
+        if (childRight !== null) childRight.parent = this
+        if (isLeftChild()) parent?.left = child
+        if (isRightChild()) parent?.right = child
         child.parent = parent
         child.right = this
         parent = child
@@ -100,7 +90,7 @@ fun <T : Comparable<T>> Node<T>?.toStringEvenIfNull(): String {
         return "Leaf"
     }
     val prefix = if (color == Color.BLACK) "B" else "R"
-    val nodeName = if (isRoot) "Root" else "kotlin.Node"
+    val nodeName = if (isRoot) "Root" else "Node"
     return "${prefix}${nodeName}($value)"
 }
 
