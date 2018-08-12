@@ -1,6 +1,6 @@
 package rbtree
 
-import kotlin.test.assertEquals
+import kotlin.test.assertSame
 import org.junit.Test
 
 class TestSource {
@@ -18,16 +18,16 @@ class TestSource {
         y.addRightNode(gamma)
         y.rightRotate()
 
-        assertEquals(parent.left, x)
-        assertEquals(x.parent, parent)
-        assertEquals(x.left, alpha)
-        assertEquals(alpha.parent, x)
-        assertEquals(x.right, y)
-        assertEquals(y.parent, x)
-        assertEquals(y.left, beta)
-        assertEquals(beta.parent, y)
-        assertEquals(y.right, gamma)
-        assertEquals(gamma.parent, y)
+        assertSame(parent.left, x)
+        assertSame(x.parent, parent)
+        assertSame(x.left, alpha)
+        assertSame(alpha.parent, x)
+        assertSame(x.right, y)
+        assertSame(y.parent, x)
+        assertSame(y.left, beta)
+        assertSame(beta.parent, y)
+        assertSame(y.right, gamma)
+        assertSame(gamma.parent, y)
     }
 
     @Test fun NodeRightRotateRoot() {
@@ -42,15 +42,15 @@ class TestSource {
         y.addRightNode(gamma)
         y.rightRotate()
 
-        assertEquals(x.parent, null)
-        assertEquals(x.left, alpha)
-        assertEquals(alpha.parent, x)
-        assertEquals(x.right, y)
-        assertEquals(y.parent, x)
-        assertEquals(y.left, beta)
-        assertEquals(beta.parent, y)
-        assertEquals(y.right, gamma)
-        assertEquals(gamma.parent, y)
+        assertSame(x.parent, null)
+        assertSame(x.left, alpha)
+        assertSame(alpha.parent, x)
+        assertSame(x.right, y)
+        assertSame(y.parent, x)
+        assertSame(y.left, beta)
+        assertSame(beta.parent, y)
+        assertSame(y.right, gamma)
+        assertSame(gamma.parent, y)
     }
 
     @Test fun NodeRightRotateNoChild() {
@@ -65,14 +65,14 @@ class TestSource {
         y.addRightNode(gamma)
         y.rightRotate()
 
-        assertEquals(parent.left, x)
-        assertEquals(x.parent, parent)
-        assertEquals(x.left, alpha)
-        assertEquals(alpha.parent, x)
-        assertEquals(x.right, y)
-        assertEquals(y.parent, x)
-        assertEquals(y.left, null)
-        assertEquals(y.right, gamma)
-        assertEquals(gamma.parent, y)
+        assertSame(parent.left, x)
+        assertSame(x.parent, parent)
+        assertSame(x.left, alpha)
+        assertSame(alpha.parent, x)
+        assertSame(x.right, y)
+        assertSame(y.parent, x)
+        assertSame(y.left, null)
+        assertSame(y.right, gamma)
+        assertSame(gamma.parent, y)
     }
 }
