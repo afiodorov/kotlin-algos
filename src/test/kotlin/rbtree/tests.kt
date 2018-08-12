@@ -18,6 +18,13 @@ class TestSource {
         y.addRightNode(gamma)
         y.rightRotate()
 
+        assertSame(alpha.left, null)
+        assertSame(alpha.right, null)
+        assertSame(beta.left, null)
+        assertSame(beta.right, null)
+        assertSame(gamma.left, null)
+        assertSame(gamma.right, null)
+
         assertSame(parent.left, x)
         assertSame(x.parent, parent)
         assertSame(x.left, alpha)
@@ -42,6 +49,13 @@ class TestSource {
         y.addRightNode(gamma)
         y.rightRotate()
 
+        assertSame(alpha.left, null)
+        assertSame(alpha.right, null)
+        assertSame(beta.left, null)
+        assertSame(beta.right, null)
+        assertSame(gamma.left, null)
+        assertSame(gamma.right, null)
+
         assertSame(x.parent, null)
         assertSame(x.left, alpha)
         assertSame(alpha.parent, x)
@@ -64,6 +78,11 @@ class TestSource {
         y.addLeftNode(x)
         y.addRightNode(gamma)
         y.rightRotate()
+
+        assertSame(alpha.left, null)
+        assertSame(alpha.right, null)
+        assertSame(gamma.left, null)
+        assertSame(gamma.right, null)
 
         assertSame(parent.left, x)
         assertSame(x.parent, parent)
@@ -89,6 +108,13 @@ class TestSource {
         y.addLeftNode(beta)
         y.addRightNode(gamma)
         x.leftRotate()
+
+        assertSame(alpha.left, null)
+        assertSame(alpha.right, null)
+        assertSame(beta.left, null)
+        assertSame(beta.right, null)
+        assertSame(gamma.left, null)
+        assertSame(gamma.right, null)
 
         assertSame(parent.right, y)
         assertSame(y.parent, parent)
@@ -116,7 +142,15 @@ class TestSource {
         y.addRightNode(gamma)
         x.leftRotate()
 
+        assertSame(alpha.left, null)
+        assertSame(alpha.right, null)
+        assertSame(beta.left, null)
+        assertSame(beta.right, null)
+        assertSame(gamma.left, null)
+        assertSame(gamma.right, null)
+
         assertSame(parent.left, y)
+        assertSame(parent.right, null)
         assertSame(y.parent, parent)
         assertSame(x.left, alpha)
         assertSame(alpha.parent, x)
