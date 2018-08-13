@@ -119,7 +119,7 @@ class Tree<T : Comparable<T>>(val rootValue: T) {
             sb.append(it.toString())
             sb.append(' ')
         }
-        return sb.toString().trim()
+        return sb.trim().toString()
     }
 }
 
