@@ -204,8 +204,8 @@ class TestTree {
         tree.root.color = Color.RED
 
         val (isValid, errMesage) = tree.isValidRedBlackTree()
-        assertEquals(isValid, false)
-        assertEquals(errMesage, "Root node should be black.")
+        assertEquals(false, isValid)
+        assertEquals("Root node should be black.", errMesage)
     }
 
     @Test fun isValidRedBlackTree2Reds1() {
@@ -214,8 +214,8 @@ class TestTree {
         tree.root.right!!.addRightNode(Node<Long>(11, color=Color.RED))
 
         val (isValid, errMesage) = tree.isValidRedBlackTree()
-        assertEquals(isValid, false)
-        assertEquals(errMesage, "2 red children: ${tree.root.right}")
+        assertEquals(false, isValid)
+        assertEquals("2 red children: ${tree.root.right}", errMesage)
     }
 
     @Test fun isValidRedBlackTree2Reds2() {
@@ -224,7 +224,38 @@ class TestTree {
         tree.root.right!!.addLeftNode(Node<Long>(11, color=Color.RED))
 
         val (isValid, errMesage) = tree.isValidRedBlackTree()
-        assertEquals(isValid, false)
-        assertEquals(errMesage, "2 red children: ${tree.root.right}")
+        assertEquals(false, isValid)
+        assertEquals("2 red children: ${tree.root.right}", errMesage)
+    }
+
+    @Test fun isValidRedBlackTreeDifferentHeights() {
+        val tree = Tree<Long>(0)
+        tree.root.addRightNode(Node<Long>(10))
+        tree.root.addLeftNode(Node<Long>(15))
+        tree.root.right!!.addLeftNode(Node<Long>(11))
+        tree.root.left!!.addLeftNode(Node<Long>(13, color = Color.RED))
+
+        val (isValid, errMesage) = tree.isValidRedBlackTree()
+        assertEquals(false, isValid)
+        assertEquals("Expected black height: 3. Actual: 2. Node: ${tree.root.left?.left}", errMesage)
+    }
+
+    @Test fun isValidRedBlackTreeSameHeights() {
+        val tree = Tree<Long>(0)
+        tree.root.addRightNode(Node<Long>(10))
+        tree.root.addLeftNode(Node<Long>(15))
+        val right = tree.root.right!!
+        val left = tree.root.left!!
+        right.addLeftNode(Node<Long>(11, color = Color.RED))
+        right.addRightNode(Node<Long>(17, color = Color.RED))
+        left.addLeftNode(Node<Long>(13))
+        left.addRightNode(Node<Long>(20))
+        right.right!!.addRightNode(Node<Long>(26))
+        right.left!!.addRightNode(Node<Long>(72))
+        right.left!!.right!!.addLeftNode(Node<Long>(80, color=Color.RED))
+
+        val (isValid, errMesage) = tree.isValidRedBlackTree()
+        assertEquals(true, isValid)
+        assertEquals("", errMesage)
     }
 }

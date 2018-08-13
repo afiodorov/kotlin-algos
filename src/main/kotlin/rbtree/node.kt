@@ -1,6 +1,7 @@
 package rbtree
 
 import java.util.LinkedList
+import java.util.IdentityHashMap
 
 enum class Color {
     BLACK,
@@ -134,6 +135,27 @@ class Tree<T : Comparable<T>>(val rootValue: T) {
             }
         }
         if (msg != "") return Pair(false, msg)
+
+        val blackHeightMap = IdentityHashMap<Node<T>?, Long>()
+        blackHeightMap[null] = 0
+        breadthFirstNodeTraversal {
+            if (it === null) return@breadthFirstNodeTraversal
+            val increment = if (it.color == Color.BLACK) 1 else 0
+            blackHeightMap[it] = blackHeightMap[it.parent]!! + increment
+        }
+
+        var sameLeafBlackHeight : Long = -1
+        blackHeightMap.forEach {
+            val (node, blackHeight) = it
+            if (node === null) return@forEach
+            if (node.left !== null) return@forEach
+            if (node.right !== null) return@forEach
+            if (sameLeafBlackHeight == -1.toLong()) {
+                sameLeafBlackHeight = blackHeight
+            } else if (sameLeafBlackHeight != blackHeight) {
+                return Pair(false, "Expected black height: $sameLeafBlackHeight. Actual: $blackHeight. Node: $node")
+            }
+        }
 
         return Pair(true, "")
     }
