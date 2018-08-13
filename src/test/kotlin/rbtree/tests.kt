@@ -4,6 +4,8 @@ import kotlin.test.assertSame
 import org.junit.Test
 import kotlin.test.assertEquals
 
+
+
 class TestNode {
     @Test fun NodeRightRotate() {
         val parent = Node<Long>(0)
@@ -195,5 +197,24 @@ class TestTree {
         tree.unbalancedInsert(7)
         tree.unbalancedInsert(6)
         assertEquals("10 9 null 8 null 7 null 6 null null null", tree.toString())
+    }
+
+    @Test fun isValidRedBlackTreeRedRoot() {
+        val tree = Tree<Long>(0)
+        tree.root.color = Color.RED
+
+        val (isValid, errMesage) = tree.isValidRedBlackTree()
+        assertEquals(isValid, false)
+        assertEquals(errMesage, "Root node should be black.")
+    }
+
+    @Test fun isValidRedBlackTree2Reds() {
+        val tree = Tree<Long>(0)
+        tree.root.addRightNode(Node<Long>(10, color=Color.RED))
+        tree.root.right!!.addRightNode(Node<Long>(11, color=Color.RED))
+
+        val (isValid, errMesage) = tree.isValidRedBlackTree()
+        assertEquals(isValid, false)
+        assertEquals(errMesage, "2 right children: ${tree.root.right}")
     }
 }

@@ -1,12 +1,14 @@
 package rbtree
 
+import java.util.LinkedList
+
 enum class Color {
     BLACK,
     RED
 }
 
 class Node<T : Comparable<T>>(val value: T,
-                                     var color: Color = Color.BLACK) : Comparable<Node<T>> {
+                              var color: Color = Color.BLACK) : Comparable<Node<T>> {
     var left: Node<T>? = null
     var right: Node<T>? = null
     var parent: Node<T>? = null
@@ -87,26 +89,53 @@ fun <T : Comparable<T>> Node<T>?.toStringEvenIfNull(): String {
 class Tree<T : Comparable<T>>(val rootValue: T) {
     var root = Node<T>(rootValue)
 
-    fun unbalancedInsert(value: T) {
-        var curNode: Node<T>? = this.root
-        var curParent: Node<T> = this.root
-        while (curNode != null) {
-            curParent = curNode
-            curNode = if (value < curNode.value) curNode.left else curNode.right
-        }
-        curParent.addChildNode(Node(value, color = Color.RED))
-    }
-
     fun breadthFirstTraversal(function: (T?) -> Unit) {
-        val dequeue = java.util.LinkedList<Node<T>?>(listOf(root))
-        while(dequeue.isNotEmpty()) {
+        val dequeue = LinkedList<Node<T>?>(listOf(root))
+        while (dequeue.isNotEmpty()) {
             val el = dequeue.poll()
             function(el?.value)
-            if(el !== null) {
+            if (el !== null) {
                 dequeue.add(el.left)
                 dequeue.add(el.right)
             }
         }
+    }
+
+    fun breadthFirstNodeTraversal(function: (Node<T>?) -> Unit) {
+        val dequeue = LinkedList<Node<T>?>(listOf(root))
+        while (dequeue.isNotEmpty()) {
+            val el = dequeue.poll()
+            function(el)
+            if (el !== null) {
+                dequeue.add(el.left)
+                dequeue.add(el.right)
+            }
+        }
+    }
+
+    fun isValidRedBlackTree(): Pair<Boolean, String> {
+        if (root.color == Color.RED) {
+            return Pair(false, "Root node should be black.")
+        }
+
+        var msg = ""
+        breadthFirstNodeTraversal {
+            if (it !== null && it.color == Color.RED) {
+                val left = it.left
+                if (left !== null && left.color == Color.RED) {
+                    msg = "2 right children: $it."
+                    return@breadthFirstNodeTraversal
+                }
+                val right = it.right
+                if (right !== null && right.color == Color.RED) {
+                    msg = "2 right children: $it"
+                    return@breadthFirstNodeTraversal
+                }
+            }
+        }
+        if (msg != "") return Pair(false, msg)
+
+        return Pair(true, "")
     }
 
     override fun toString(): String {
@@ -117,41 +146,52 @@ class Tree<T : Comparable<T>>(val rootValue: T) {
         }
         return sb.trim().toString()
     }
-}
 
-fun <T : Comparable<T>> rbInsertFixup(root: Node<T>, newNode: Node<T>) {
-    var newNode = newNode
-    var parent = newNode.parent!! // newNode always has a parent
-    while (parent.color == Color.RED) {
-        // parent is not root since root is black, thus it has a parent
-        val uncle = parent.uncle()
-        if (uncle?.color == Color.RED) {
-            parent.color = Color.BLACK
-            uncle.color = Color.BLACK
-
-            newNode = parent.parent!!
-            parent = newNode.parent!!
-            continue
+    fun unbalancedInsert(value: T) {
+        var curNode: Node<T>? = this.root
+        var curParent: Node<T> = this.root
+        while (curNode != null) {
+            curParent = curNode
+            curNode = if (value < curNode.value) curNode.left else curNode.right
         }
-
-        if (parent.isLeftChild()) {
-            if (newNode.isRightChild()) {
-                newNode = newNode.parent!!
-                // newNode.leftRotate()
-            }
-
-            newNode.parent!!.color = Color.BLACK
-            newNode.parent!!.parent!!.color = Color.RED
-            // newNode.parent!!.parent!!.rightRotate()
-        } else if (parent.isRightChild()) {
-
-        } else {
-            throw RuntimeException("Should be unreachable by the algorithm.")
-        }
+        curParent.addChildNode(Node(value, color = Color.RED))
     }
 
-    root.color = Color.BLACK
+    fun redBlackInsertFixup(newNode: Node<T>) {
+        var nodeInserted = newNode
+        var parent = nodeInserted.parent!! // newNode always has a parent
+        while (parent.color == Color.RED) {
+            // parent is not root since root is black, thus it has a parent
+            val uncle = parent.uncle()
+            if (uncle?.color == Color.RED) {
+                parent.color = Color.BLACK
+                uncle.color = Color.BLACK
+
+                nodeInserted = parent.parent!!
+                parent = nodeInserted.parent!!
+                continue
+            }
+
+            if (parent.isLeftChild()) {
+                if (nodeInserted.isRightChild()) {
+                    nodeInserted = nodeInserted.parent!!
+                    nodeInserted.leftRotate()
+                }
+
+                nodeInserted.parent!!.color = Color.BLACK
+                nodeInserted.parent!!.parent!!.color = Color.RED
+                nodeInserted.parent!!.parent!!.rightRotate()
+            } else if (parent.isRightChild()) {
+
+            } else {
+                throw RuntimeException("Should be unreachable by the algorithm.")
+            }
+        }
+
+        root.color = Color.BLACK
+    }
 }
+
 
 fun main(args: Array<String>) {
     val tree = Tree<Long>(3)
