@@ -21,9 +21,7 @@ class Node<T : Comparable<T>>(val value: T,
         return "$main.${if (!isRoot) " Parent: $parent." else ""} Left: $left. Right: $right."
     }
 
-    override operator fun compareTo(other: Node<T>): Int {
-        return value.compareTo(other.value)
-    }
+    override operator fun compareTo(other: Node<T>): Int = value.compareTo(other.value)
 
     fun T.compareTo(): Int = value.compareTo(this)
 
