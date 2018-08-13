@@ -25,9 +25,7 @@ class Node<T : Comparable<T>>(val value: T,
         return value.compareTo(other.value)
     }
 
-    fun T.compareTo(): Int {
-        return value.compareTo(this)
-    }
+    fun T.compareTo(): Int = value.compareTo(this)
 
     fun addLeftNode(node: Node<T>) {
         left = node
