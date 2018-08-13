@@ -176,4 +176,24 @@ class TestTree {
         tree.root.right?.addLeftNode(Node<Long>(16))
         assertEquals("5 11 10 null 15 16 null null null null null", tree.toString())
     }
+
+    @Test fun unbalancedInsert() {
+        val tree = Tree<Long>(5)
+        tree.unbalancedInsert(10)
+        tree.unbalancedInsert(2)
+        tree.unbalancedInsert(12)
+        tree.unbalancedInsert(9)
+        tree.unbalancedInsert(1)
+        tree.unbalancedInsert(0)
+        assertEquals("5 2 10 1 null 9 12 0 null null null null null null null", tree.toString())
+    }
+
+    @Test fun unbalancedInsertSorted() {
+        val tree = Tree<Long>(10)
+        tree.unbalancedInsert(9)
+        tree.unbalancedInsert(8)
+        tree.unbalancedInsert(7)
+        tree.unbalancedInsert(6)
+        assertEquals("10 9 null 8 null 7 null 6 null null null", tree.toString())
+    }
 }
