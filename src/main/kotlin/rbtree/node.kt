@@ -100,6 +100,27 @@ class Tree<T : Comparable<T>>(val rootValue: T) {
         }
         curParent.addChildNode(Node(value, color = Color.RED))
     }
+
+    fun breadthFirstTraversal(function: (T?) -> Unit) {
+        val dequeue = java.util.LinkedList<Node<T>?>(listOf(root))
+        while(dequeue.isNotEmpty()) {
+            val el = dequeue.poll()
+            function(el?.value)
+            if(el !== null) {
+                dequeue.add(el.left)
+                dequeue.add(el.right)
+            }
+        }
+    }
+
+    override fun toString(): String {
+        val sb = StringBuilder()
+        breadthFirstTraversal {
+            sb.append(it.toString())
+            sb.append(' ')
+        }
+        return sb.toString().trim()
+    }
 }
 
 fun <T : Comparable<T>> rbInsertFixup(root: Node<T>, newNode: Node<T>) {

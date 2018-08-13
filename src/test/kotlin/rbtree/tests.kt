@@ -2,8 +2,9 @@ package rbtree
 
 import kotlin.test.assertSame
 import org.junit.Test
+import kotlin.test.assertEquals
 
-class TestSource {
+class TestNode {
     @Test fun NodeRightRotate() {
         val parent = Node<Long>(0)
         val y = Node<Long>(3)
@@ -160,5 +161,19 @@ class TestSource {
         assertSame(gamma.parent, y)
         assertSame(y.left, x)
         assertSame(x.parent, y)
+    }
+}
+
+class TestTree {
+    @Test fun toStringWithNulls() {
+        val tree = Tree<Long>(5)
+        assertEquals("5 null null", tree.toString())
+        tree.root.addRightNode(Node<Long>(10))
+        assertEquals("5 null 10 null null", tree.toString())
+        tree.root.addLeftNode(Node<Long>(11))
+        assertEquals("5 11 10 null null null null", tree.toString())
+        tree.root.left?.addRightNode(Node<Long>(15))
+        tree.root.right?.addLeftNode(Node<Long>(16))
+        assertEquals("5 11 10 null 15 16 null null null null null", tree.toString())
     }
 }
