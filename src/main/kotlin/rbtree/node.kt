@@ -123,12 +123,12 @@ class Tree<T : Comparable<T>>(val rootValue: T) {
             if (it !== null && it.color == Color.RED) {
                 val left = it.left
                 if (left !== null && left.color == Color.RED) {
-                    msg = "2 right children: $it."
+                    msg = "2 red children: $it"
                     return@breadthFirstNodeTraversal
                 }
                 val right = it.right
                 if (right !== null && right.color == Color.RED) {
-                    msg = "2 right children: $it"
+                    msg = "2 red children: $it"
                     return@breadthFirstNodeTraversal
                 }
             }

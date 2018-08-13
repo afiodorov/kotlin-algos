@@ -208,13 +208,23 @@ class TestTree {
         assertEquals(errMesage, "Root node should be black.")
     }
 
-    @Test fun isValidRedBlackTree2Reds() {
+    @Test fun isValidRedBlackTree2Reds1() {
         val tree = Tree<Long>(0)
         tree.root.addRightNode(Node<Long>(10, color=Color.RED))
         tree.root.right!!.addRightNode(Node<Long>(11, color=Color.RED))
 
         val (isValid, errMesage) = tree.isValidRedBlackTree()
         assertEquals(isValid, false)
-        assertEquals(errMesage, "2 right children: ${tree.root.right}")
+        assertEquals(errMesage, "2 red children: ${tree.root.right}")
+    }
+
+    @Test fun isValidRedBlackTree2Reds2() {
+        val tree = Tree<Long>(0)
+        tree.root.addRightNode(Node<Long>(10, color=Color.RED))
+        tree.root.right!!.addLeftNode(Node<Long>(11, color=Color.RED))
+
+        val (isValid, errMesage) = tree.isValidRedBlackTree()
+        assertEquals(isValid, false)
+        assertEquals(errMesage, "2 red children: ${tree.root.right}")
     }
 }
