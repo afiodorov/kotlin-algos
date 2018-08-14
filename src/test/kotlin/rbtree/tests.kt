@@ -3,6 +3,7 @@ package rbtree
 import kotlin.test.assertSame
 import org.junit.Test
 import kotlin.test.assertEquals
+import java.util.Random
 
 
 class TestNode {
@@ -359,5 +360,18 @@ class TestTree {
         assertEquals("", msg)
         assertEquals("9 3 14 2 8 10 15 1 null null null null 11 null null null null null null",
                 tree.toString())
+    }
+
+    @Test
+    fun balancedInsert() {
+        val random = Random(0.toLong())
+        val rootValue = random.nextLong()
+        val tree = Tree<Long>(rootValue)
+        for (i in 1..500) {
+            tree.balancedInsert(random.nextLong())
+            val (isValid, msg) = tree.isValidRedBlackTree()
+            assertEquals(true, isValid)
+            assertEquals("", msg)
+        }
     }
 }

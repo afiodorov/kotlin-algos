@@ -237,6 +237,12 @@ class Tree<T : Comparable<T>>(val rootValue: T) {
 
         root.color = Color.BLACK
     }
+
+    fun balancedInsert(value: T) : Node<T> {
+        val node = unbalancedInsert(value)
+        redBlackInsertFixup(node)
+        return node
+    }
 }
 
 
