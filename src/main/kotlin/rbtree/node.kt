@@ -190,6 +190,9 @@ class Tree<T : Comparable<T>>(val rootValue: T) {
                 uncle.color = Color.BLACK
 
                 nodeInserted = parent.parent!!
+                if (nodeInserted === root) {
+                    break
+                }
                 parent = nodeInserted.parent!!
                 continue
             }

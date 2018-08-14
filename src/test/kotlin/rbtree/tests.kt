@@ -265,6 +265,11 @@ class TestTree {
         tree.root.addRightNode(Node<Long>(2, color=Color.RED))
         val nodeInserted = Node<Long>(10, color=Color.RED)
         tree.root.left!!.addLeftNode(nodeInserted)
+        val (isValidBefore, _) = tree.isValidRedBlackTree()
+        assertEquals(false, isValidBefore)
         tree.redBlackInsertFixup(nodeInserted)
+        val (isValid, msg) = tree.isValidRedBlackTree()
+        assertEquals(true, isValid)
+        assertEquals("", msg)
     }
 }
