@@ -183,13 +183,16 @@ class Tree<T : Comparable<T>>(val rootValue: T) {
 
     fun redBlackInsertFixup(newNode: Node<T>) {
         var nodeInserted = newNode
-        var parent = nodeInserted.parent!! // newNode always has a parent
+        // newNode must have a parent as it is not root
+        var parent = nodeInserted.parent!!
         while (parent.color == Color.RED) {
             val uncle = parent.uncle()
             if (uncle?.color == Color.RED) {
                 parent.color = Color.BLACK
                 uncle.color = Color.BLACK
 
+                // because the tree is invalid Red-Black tree it means
+                // that there are 2 red nodes, thus the parent must have a parent
                 nodeInserted = parent.parent!!
                 if (nodeInserted === root) {
                     break
@@ -200,15 +203,32 @@ class Tree<T : Comparable<T>>(val rootValue: T) {
 
             if (parent.isLeftChild()) {
                 if (nodeInserted.isRightChild()) {
-                    nodeInserted = nodeInserted.parent!!
+                    nodeInserted = nodeInserted.parent!! // not root as it is red
                     nodeInserted.leftRotate()
+                    parent = nodeInserted.parent!!
                 }
 
-                nodeInserted.parent!!.color = Color.BLACK
-                nodeInserted.parent!!.parent!!.color = Color.RED
-                nodeInserted.parent!!.parent!!.rightRotate()
+                parent.color = Color.BLACK
+                parent.parent!!.color = Color.RED
+                val toRightRotate = parent.parent!!
+                if (toRightRotate == root) {
+                    root = toRightRotate.left!!
+                }
+                toRightRotate.rightRotate()
             } else if (parent.isRightChild()) {
+                if (nodeInserted.isLeftChild()) {
+                    nodeInserted = nodeInserted.parent!! // not root as it is red
+                    nodeInserted.rightRotate()
+                    parent = nodeInserted.parent!!
+                }
 
+                parent.color = Color.BLACK
+                parent.parent!!.color = Color.RED
+                val toLeftRotate = parent.parent!!
+                if (toLeftRotate == root) {
+                    root = toLeftRotate.right!!
+                }
+                toLeftRotate.leftRotate()
             } else {
                 throw RuntimeException("Should be unreachable by the algorithm.")
             }
