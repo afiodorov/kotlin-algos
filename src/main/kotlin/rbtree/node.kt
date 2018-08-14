@@ -194,6 +194,7 @@ class Tree<T : Comparable<T>>(val rootValue: T) {
                 // because the tree is invalid Red-Black tree it means
                 // that there are 2 red nodes, thus the parent must have a parent
                 nodeInserted = parent.parent!!
+                nodeInserted.color = Color.RED
                 if (nodeInserted === root) {
                     break
                 }

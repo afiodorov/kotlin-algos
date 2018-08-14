@@ -284,6 +284,7 @@ class TestTree {
         val tree = Tree<Long>(0)
         tree.root.addLeftNode(Node<Long>(1, color = Color.RED))
         tree.root.addRightNode(Node<Long>(2, color = Color.RED))
+
         val nodeInserted = Node<Long>(10, color = Color.RED)
         tree.root.left!!.addLeftNode(nodeInserted)
         val (isValidBefore, _) = tree.isValidRedBlackTree()
@@ -298,6 +299,8 @@ class TestTree {
     fun redBlackInsertFixupCase3NoUncle() {
         val tree = Tree<Long>(10)
         tree.root.addLeftNode(Node<Long>(9, color = Color.RED))
+        val (isCorrectlyConstructed, _) = tree.isValidRedBlackTree()
+        assertEquals(true, isCorrectlyConstructed)
         val nodeInserted = Node<Long>(8, color = Color.RED)
         tree.root.left!!.addLeftNode(nodeInserted)
         val (isValidBefore, _) = tree.isValidRedBlackTree()
@@ -319,6 +322,8 @@ class TestTree {
         tree.root.addRightNode(Node<Long>(14))
         tree.root.right!!.addRightNode(Node<Long>(15, color = Color.RED))
 
+        val (isCorrectlyConstructed, _) = tree.isValidRedBlackTree()
+        assertEquals(true, isCorrectlyConstructed)
         val nodeInserted = Node<Long>(4, color = Color.RED)
         tree.root.left!!.right!!.left!!.addLeftNode(nodeInserted)
         val (isValidBefore, _) = tree.isValidRedBlackTree()
@@ -328,6 +333,31 @@ class TestTree {
         assertEquals(true, isValid)
         assertEquals("", msg)
         assertEquals("7 2 11 1 5 8 14 null null 4 null null null null 15 null null null null",
+                tree.toString())
+    }
+
+    @Test
+    fun redBlackInsertFixupCase123Right() {
+        val tree = Tree<Long>(3)
+        tree.root.addLeftNode(Node<Long>(2))
+        tree.root.left!!.addLeftNode(Node<Long>(1, color = Color.RED))
+        tree.root.addRightNode(Node<Long>(14, color = Color.RED))
+        tree.root.right!!.addLeftNode(Node<Long>(9))
+        tree.root.right!!.left!!.addLeftNode(Node<Long>(8, color = Color.RED))
+        tree.root.right!!.left!!.addRightNode(Node<Long>(10, color = Color.RED))
+        tree.root.right!!.addRightNode(Node<Long>(15))
+
+        val (isCorrectlyConstructed, _) = tree.isValidRedBlackTree()
+        assertEquals(true, isCorrectlyConstructed)
+        val nodeInserted = Node<Long>(11, color = Color.RED)
+        tree.root.right!!.left!!.right!!.addRightNode(nodeInserted)
+        val (isValidBefore, _) = tree.isValidRedBlackTree()
+        assertEquals(false, isValidBefore)
+        tree.redBlackInsertFixup(nodeInserted)
+        val (isValid, msg) = tree.isValidRedBlackTree()
+        assertEquals(true, isValid)
+        assertEquals("", msg)
+        assertEquals("9 3 14 2 8 10 15 1 null null null null 11 null null null null null null",
                 tree.toString())
     }
 }
