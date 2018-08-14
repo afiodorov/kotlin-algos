@@ -121,6 +121,7 @@ class Tree<T : Comparable<T>>(val rootValue: T) {
 
         var msg = ""
         breadthFirstNodeTraversal {
+            if (msg != "") return@breadthFirstNodeTraversal
             if (it !== null && it.color == Color.RED) {
                 val left = it.left
                 if (left !== null && left.color == Color.RED) {
@@ -136,26 +137,25 @@ class Tree<T : Comparable<T>>(val rootValue: T) {
         }
         if (msg != "") return Pair(false, msg)
 
+        var sameLeafBlackHeight : Long = -1
         val blackHeightMap = IdentityHashMap<Node<T>?, Long>()
         blackHeightMap[null] = 0
         breadthFirstNodeTraversal {
+            if (msg != "") return@breadthFirstNodeTraversal
             if (it === null) return@breadthFirstNodeTraversal
             val increment = if (it.color == Color.BLACK) 1 else 0
-            blackHeightMap[it] = blackHeightMap[it.parent]!! + increment
-        }
+            val blackHeight = blackHeightMap[it.parent]!! + increment
+            blackHeightMap[it] = blackHeight
 
-        var sameLeafBlackHeight : Long = -1
-        blackHeightMap.forEach {
-            val (node, blackHeight) = it
-            if (node === null) return@forEach
-            if (node.left !== null) return@forEach
-            if (node.right !== null) return@forEach
-            if (sameLeafBlackHeight == -1.toLong()) {
-                sameLeafBlackHeight = blackHeight
-            } else if (sameLeafBlackHeight != blackHeight) {
-                return Pair(false, "Expected black height: $sameLeafBlackHeight. Actual: $blackHeight. Node: $node")
+            if ((it.left === null) && (it.right == null)) {
+                if (sameLeafBlackHeight == -1.toLong()) {
+                    sameLeafBlackHeight = blackHeight
+                } else if (sameLeafBlackHeight != blackHeight) {
+                    msg = "Expected black height: $sameLeafBlackHeight. Actual: $blackHeight. Node: $it"
+                }
             }
         }
+        if (msg != "") return Pair(false, msg)
 
         return Pair(true, "")
     }

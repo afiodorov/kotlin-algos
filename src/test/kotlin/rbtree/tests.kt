@@ -230,14 +230,14 @@ class TestTree {
 
     @Test fun isValidRedBlackTreeDifferentHeights() {
         val tree = Tree<Long>(0)
-        tree.root.addRightNode(Node<Long>(10))
         tree.root.addLeftNode(Node<Long>(15))
-        tree.root.right!!.addLeftNode(Node<Long>(11))
+        tree.root.addRightNode(Node<Long>(10))
         tree.root.left!!.addLeftNode(Node<Long>(13, color = Color.RED))
+        tree.root.right!!.addLeftNode(Node<Long>(11))
 
         val (isValid, errMesage) = tree.isValidRedBlackTree()
         assertEquals(false, isValid)
-        assertEquals("Expected black height: 3. Actual: 2. Node: ${tree.root.left?.left}", errMesage)
+        assertEquals("Expected black height: 2. Actual: 3. Node: ${tree.root.right?.left}", errMesage)
     }
 
     @Test fun isValidRedBlackTreeSameHeights() {
@@ -257,5 +257,14 @@ class TestTree {
         val (isValid, errMesage) = tree.isValidRedBlackTree()
         assertEquals(true, isValid)
         assertEquals("", errMesage)
+    }
+
+    @Test fun redBlackInsertFixupCase1() {
+        val tree = Tree<Long>(0)
+        tree.root.addLeftNode(Node<Long>(1, color=Color.RED))
+        tree.root.addRightNode(Node<Long>(2, color=Color.RED))
+        val nodeInserted = Node<Long>(10, color=Color.RED)
+        tree.root.left!!.addLeftNode(nodeInserted)
+        tree.redBlackInsertFixup(nodeInserted)
     }
 }
