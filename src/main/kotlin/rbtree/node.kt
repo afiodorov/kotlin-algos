@@ -169,21 +169,22 @@ class Tree<T : Comparable<T>>(val rootValue: T) {
         return sb.trim().toString()
     }
 
-    fun unbalancedInsert(value: T) {
+    fun unbalancedInsert(value: T) : Node<T> {
         var curNode: Node<T>? = this.root
         var curParent: Node<T> = this.root
         while (curNode != null) {
             curParent = curNode
             curNode = if (value < curNode.value) curNode.left else curNode.right
         }
-        curParent.addChildNode(Node(value, color = Color.RED))
+        val newNode = Node(value, color = Color.RED)
+        curParent.addChildNode(newNode)
+        return newNode
     }
 
     fun redBlackInsertFixup(newNode: Node<T>) {
         var nodeInserted = newNode
         var parent = nodeInserted.parent!! // newNode always has a parent
         while (parent.color == Color.RED) {
-            // parent is not root since root is black, thus it has a parent
             val uncle = parent.uncle()
             if (uncle?.color == Color.RED) {
                 parent.color = Color.BLACK
